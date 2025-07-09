@@ -41,7 +41,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return userEntity.isAccountNonLock();
     }
 
     @Override

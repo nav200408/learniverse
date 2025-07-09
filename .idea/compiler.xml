@@ -10,22 +10,32 @@
         <module name="ConfigService" />
         <module name="receiveData" />
         <module name="UserService" />
+        <module name="EnrollmentService" />
+        <module name="CourseService" />
         <module name="MonitorAdmin" />
+        <module name="EmailService" />
         <module name="DiscoveryService" />
         <module name="GateWayService" />
+        <module name="PaymentService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common" target="24" />
+      <module name="notificationservice" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ConfigService" options="-parameters" />
+      <module name="CourseService" options="-parameters" />
       <module name="DiscoveryService" options="-parameters" />
+      <module name="EmailService" options="-parameters" />
+      <module name="EnrollmentService" options="-parameters" />
       <module name="GateWayService" options="-parameters" />
       <module name="MonitorAdmin" options="-parameters" />
+      <module name="PaymentService" options="-parameters" />
       <module name="UserService" options="-parameters" />
+      <module name="notificationservice" options="-parameters" />
       <module name="receiveData" options="-parameters" />
       <module name="sendData" options="-parameters" />
     </option>

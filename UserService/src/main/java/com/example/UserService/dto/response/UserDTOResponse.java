@@ -7,17 +7,26 @@ public class UserDTOResponse {
     private int age;
     private String userName;
     private String role;
-
-    public UserDTOResponse(int id, String fullName, String address, int age, String userName, String role) {
+    private String email;
+    public UserDTOResponse(int id, String fullName, String address, int age, String userName, String role,String email) {
         this.id = id;
         this.fullName = fullName;
         this.address = address;
         this.age = age;
         this.userName = userName;
         this.role = role;
+        this.email=email;
     }
 
     public UserDTOResponse() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {
