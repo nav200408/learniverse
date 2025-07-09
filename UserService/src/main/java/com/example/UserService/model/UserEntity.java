@@ -16,17 +16,38 @@ public class UserEntity {
     private String userName;
     private String password;
     private String role;
+    private boolean isAccountNonLock;
+    private String email;
 
     public UserEntity() {
     }
 
-    public UserEntity(String fullName, String address, int age, String userName, String password, String role) {
+    public UserEntity(int id, String fullName, String address, int age, String userName, String password, String role, boolean isAccountNonLock, String email) {
+        this.id = id;
         this.fullName = fullName;
         this.address = address;
         this.age = age;
         this.userName = userName;
         this.password = password;
         this.role = role;
+        this.isAccountNonLock = isAccountNonLock;
+        this.email=email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isAccountNonLock() {
+        return isAccountNonLock;
+    }
+
+    public void setAccountNonLock(boolean accountNonLock) {
+        isAccountNonLock = accountNonLock;
     }
 
     public String getRole() {
