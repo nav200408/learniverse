@@ -2,10 +2,7 @@ package com.example.PaymentService.controller;
 
 import com.example.PaymentService.client.UserService;
 import com.example.PaymentService.dto.request.PaymentSubmitRequest;
-import com.example.PaymentService.dto.response.EnrollmentResponse;
-import com.example.PaymentService.dto.response.MessageDTO;
-import com.example.PaymentService.dto.response.PaymentResponse;
-import com.example.PaymentService.dto.response.UserDTOResponse;
+import com.example.PaymentService.dto.response.*;
 import com.example.PaymentService.model.PaymentEntity;
 import com.example.PaymentService.repository.PaymentRepository;
 import com.example.PaymentService.service.Impl.VNPayService;
@@ -54,6 +51,8 @@ public class PaymentController {
             kafkaTemplate.send("enrollment",enrollmentResponse);
             MessageDTO messageDTO = new MessageDTO(email,"mua khoa hoc thanh cong",username+ "ban mua thanh cong khoa hoc voi id: "+courseId+" voi gia la: "+totalPrice);
             kafkaTemplate.send("notification", messageDTO);
+            WishlistDTO wishlistDTO = new WishlistDTO(username,courseId);
+            kafkaTemplate.send("wishlist",wishlistDTO);
             URI redirectUri = URI.create("");
             return ResponseEntity.status(HttpStatus.FOUND).body("success");
         }

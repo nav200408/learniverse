@@ -14,12 +14,6 @@ public class SomeFilter extends AbstractGatewayFilterFactory {
     public GatewayFilter apply(Object config) {
         return ((exchange, chain) -> {
             System.out.println("SomeFilter");
-            if(exchange.getRequest().getQueryParams().getFirst("myParam").equals("1")){
-                exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
-                exchange.getResponse().getHeaders().add("Content-Type", "text/plain");
-                byte[] bytes = "Invalid request".getBytes(StandardCharsets.UTF_8);
-                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(bytes)));
-            }
             return chain.filter(exchange);
         });
     }
