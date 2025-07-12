@@ -19,10 +19,17 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
     @Override
     public ResponseEntity<String> loginHandler(AuthenticationRequest authenticationRequest){
         UserEntity userEntity = userRepository.findByUserName(authenticationRequest.getEmail());
-        if(userEntity !=null||userEntity.getPassword().equals(authenticationRequest.getPassword())){
-            return new ResponseEntity<>(JwtUtils.generateToken(new UserDetail(userEntity)), HttpStatus.OK);
+
+        if (userEntity != null && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())) {
+            UserDetail userDetail = new UserDetail(userEntity);
+            String accessToken = JwtUtils.generateAccessToken(userDetail);
+            String refreshToken = JwtUtils.generateRefreshToken(userDetail);
+
+            String response = String.format("{\"accessToken\": \"%s\", \"refreshToken\": \"%s\"}", accessToken, refreshToken);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Your username or password not correct", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>("Your username or password is incorrect", HttpStatus.BAD_REQUEST);
     }
     @Override
     public ResponseEntity<String> registerHandler(RegisterRequest registerRequest){
