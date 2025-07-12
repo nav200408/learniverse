@@ -88,7 +88,7 @@ public class VideoStreamController {
         // Save video file
         file.transferTo(new File(filePath));
 
-        return ResponseEntity.ok("Uploaded successfully: " + newFilename);
+        return ResponseEntity.ok(newFilename);
     }
 }
 

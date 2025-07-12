@@ -58,6 +58,6 @@ public class ImageController {
         // Save the file
         file.transferTo(new File(filePath));
 
-        return ResponseEntity.ok(newFilename);
+        return ResponseEntity.ok().body(newFilename);
     }
 }

@@ -22,4 +22,10 @@ public class PaymentServiceApplication {
 		return new NewTopic("enrollment",1,(short) 1);
 	}
 
+	@Bean
+	NewTopic wishlist(){
+		return new NewTopic("enrollment",1,(short) 1);
+	}
+
+
 }

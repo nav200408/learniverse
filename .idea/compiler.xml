@@ -7,15 +7,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sendData" />
-        <module name="ConfigService" />
-        <module name="receiveData" />
         <module name="UserService" />
         <module name="EnrollmentService" />
         <module name="CourseService" />
         <module name="MonitorAdmin" />
-        <module name="EmailService" />
         <module name="StreamingService" />
+        <module name="ConfigService" />
+        <module name="receiveData" />
+        <module name="EmailService" />
         <module name="DiscoveryService" />
+        <module name="WishlistService" />
         <module name="GateWayService" />
         <module name="PaymentService" />
       </profile>
@@ -37,6 +38,7 @@
       <module name="PaymentService" options="-parameters" />
       <module name="StreamingService" options="-parameters" />
       <module name="UserService" options="-parameters" />
+      <module name="WishlistService" options="-parameters" />
       <module name="notificationservice" options="-parameters" />
       <module name="receiveData" options="-parameters" />
       <module name="sendData" options="-parameters" />
