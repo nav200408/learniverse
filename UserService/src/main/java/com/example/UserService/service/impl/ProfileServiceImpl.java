@@ -20,7 +20,7 @@ public class ProfileServiceImpl implements ProfileService {
         System.out.println("hello");
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
        UserEntity userEntity = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-       UserProfileResponse userProfileResponse = new UserProfileResponse(userEntity.getUserName(),userEntity.getAge(),userEntity.getFullName(),userEntity.getAddress());
+       UserProfileResponse userProfileResponse = new UserProfileResponse(userEntity.getUserName(),userEntity.getAge(),userEntity.getFullName(),userEntity.getAddress(), userEntity.getEmail());
        return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
     }
 
@@ -31,6 +31,6 @@ public class ProfileServiceImpl implements ProfileService {
        userEntity.setAge(userProfileRequest.getAge());
        userEntity.setAddress(userProfileRequest.getAddress());
        userRepository.save(userEntity);
-        return ResponseEntity.ok().body(new UserProfileResponse(userEntity.getUserName(),userEntity.getAge(),userEntity.getFullName(),userEntity.getAddress()));
+        return ResponseEntity.ok().body(new UserProfileResponse(userEntity.getUserName(),userEntity.getAge(),userEntity.getFullName(),userEntity.getAddress(), userEntity.getEmail()));
     }
 }
