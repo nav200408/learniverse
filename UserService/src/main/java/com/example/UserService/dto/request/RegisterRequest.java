@@ -6,13 +6,18 @@ public class RegisterRequest {
     private int age;
     private String username;
     private String password;
+    private String email;
 
-    public RegisterRequest(String fullName, String address, int age, String username, String password) {
+    public RegisterRequest() {
+    }
+
+    public RegisterRequest(String fullName, String address, int age, String username, String password, String email) {
         this.fullName = fullName;
         this.address = address;
         this.age = age;
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     public String getFullName() {
@@ -53,5 +58,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

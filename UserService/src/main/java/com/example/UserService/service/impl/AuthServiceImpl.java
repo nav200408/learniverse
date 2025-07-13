@@ -44,6 +44,7 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
         userEntity.setAge(registerRequest.getAge());
         userEntity.setFullName(registerRequest.getFullName());
         userEntity.setRole("ROLE_USER");
+        userEntity.setEmail(registerRequest.getEmail());
         userRepository.saveAndFlush(userEntity);
         return new ResponseEntity<>("register success",HttpStatus.OK);
     }

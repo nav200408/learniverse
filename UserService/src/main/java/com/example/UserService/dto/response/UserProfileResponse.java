@@ -5,12 +5,23 @@ public class UserProfileResponse {
     private int age;
     private String fullName;
     private String address;
+    private String email;
 
-    public UserProfileResponse(String username, int age, String fullName, String address) {
+
+    public UserProfileResponse(String username, int age, String fullName, String address, String email) {
         this.username = username;
         this.age = age;
         this.fullName = fullName;
         this.address = address;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UserProfileResponse() {
