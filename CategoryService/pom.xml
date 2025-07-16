@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>CourseService</artifactId>
+	<artifactId>CategoryService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CourseService</name>
+	<name>CategoryService</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -104,16 +104,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.github.openfeign.form</groupId>
-			<artifactId>feign-form</artifactId>
-			<version>3.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.github.openfeign.form</groupId>
-			<artifactId>feign-form-spring</artifactId>
-			<version>3.8.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
 		<dependency>

@@ -17,10 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,6 +34,8 @@ public class CourseServiceImpl implements CourseService {
     VideoRepository videoRepository;
     @Autowired
     DocumentRepository documentRepository;
+    @Autowired
+    KafkaTemplate<String,Object> kafkaTemplate;
     @Override
     public Page<CourseDto> showAllCourseHandler(int page, int size) {
         Pageable pageable = PageRequest.of(page,size, Sort.by("courseId").descending());
@@ -56,12 +56,14 @@ public class CourseServiceImpl implements CourseService {
                                                     String courseName,
                                                      String courseDetail,
                                                     int price,
+                                                   String category,
                                                    String courseImage) {
         CourseEntity course = new CourseEntity();
         course.setCourseDetail(courseDetail);
         course.setCourseName(courseName);
         course.setPrice(price);
         course.setCourseImage(courseImage);
+        kafkaTemplate.send("category",new CategoryDto(category,courseId,"create"));
         courseRepository.saveAndFlush(course);
         return ResponseEntity.ok().body(course);
     }
@@ -143,7 +145,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity editCourseHandler(int courseId, String courseName, String courseDetail, int price, MultipartFile courseImage) {
+    public ResponseEntity editCourseHandler(int courseId, String courseName, String courseDetail, int price, String category, MultipartFile courseImage) {
         CourseEntity course = courseRepository.findById(courseId).get();
         String image;
         try {
@@ -155,8 +157,8 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseName(courseName);
         course.setCourseDetail(courseDetail);
         course.setPrice(price);
+        kafkaTemplate.send("category",new CategoryDto(category,courseId,"edit"));
         courseRepository.saveAndFlush(course);
-
         return ResponseEntity.ok(course);
     }
 
