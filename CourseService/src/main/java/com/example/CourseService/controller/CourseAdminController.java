@@ -32,6 +32,7 @@ CourseService courseService;
                                        @RequestPart("courseName") String courseName,
                                        @RequestPart("courseDetail") String courseDetail,
                                        @RequestPart("price") String price,
+                                       @RequestPart("category") String category,
                                        @RequestPart("courseImage") MultipartFile courseImage){
         String image;
         try {
@@ -39,7 +40,7 @@ CourseService courseService;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return courseService.createCourse(courseId,courseName,courseDetail,Integer.parseInt(price),image);
+        return courseService.createCourse(courseId,courseName,courseDetail,Integer.parseInt(price),category,image);
     }
     @PostMapping("/create-unit")
     public ResponseEntity createUnit(@ModelAttribute UnitCreationRequest unitCreationRequest){
@@ -96,8 +97,9 @@ CourseService courseService;
                                             @RequestPart("courseName") String courseName,
                                             @RequestPart("courseDetail") String courseDetail,
                                             @RequestPart("price") int price,
+                                            @RequestPart("category") String category,
                                             @RequestPart("courseImage") MultipartFile courseImage){
-        return courseService.editCourseHandler(courseId, courseName, courseDetail,price,courseImage);
+        return courseService.editCourseHandler(courseId, courseName, courseDetail,price,category,courseImage);
     }
 
     @PostMapping("/edit-unit")

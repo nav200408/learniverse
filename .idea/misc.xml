@@ -20,6 +20,7 @@
         <option value="$PROJECT_DIR$/EmailService/pom.xml" />
         <option value="$PROJECT_DIR$/StreamingService/pom.xml" />
         <option value="$PROJECT_DIR$/WishlistService/pom.xml" />
+        <option value="$PROJECT_DIR$/CategoryService/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

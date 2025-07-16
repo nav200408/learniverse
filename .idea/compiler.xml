@@ -16,6 +16,7 @@
         <module name="receiveData" />
         <module name="EmailService" />
         <module name="DiscoveryService" />
+        <module name="CategoryService" />
         <module name="WishlistService" />
         <module name="GateWayService" />
         <module name="PaymentService" />
@@ -28,6 +29,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CategoryService" options="-parameters" />
       <module name="ConfigService" options="-parameters" />
       <module name="CourseService" options="-parameters" />
       <module name="DiscoveryService" options="-parameters" />

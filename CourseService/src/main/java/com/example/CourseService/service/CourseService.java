@@ -20,6 +20,7 @@ public interface CourseService {
                                 String courseName,
                                 String courseDetail,
                                 int price,
+                                String category,
                                 String courseImage);
 
     public ResponseEntity<UnitEntity> createUnit(UnitCreationRequest unitCreationRequest);
@@ -42,7 +43,7 @@ public interface CourseService {
 
     ResponseEntity publishHandler(int courseId);
 
-    ResponseEntity editCourseHandler(int courseId, String courseName, String courseDetail, int price, MultipartFile courseImage);
+    ResponseEntity editCourseHandler(int courseId, String courseName, String courseDetail, int price, String category, MultipartFile courseImage);
 
     ResponseEntity editUnitHandler(EditUnitDTO editUnitDTO);
 }

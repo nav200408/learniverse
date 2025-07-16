@@ -1,20 +1,20 @@
-package com.example.CourseService;
+package com.example.CategoryService;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.support.converter.JsonMessageConverter;
 
 @SpringBootApplication
 @EnableFeignClients
-public class CourseServiceApplication {
+public class CategoryServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CourseServiceApplication.class, args);
+		SpringApplication.run(CategoryServiceApplication.class, args);
 	}
 	@Bean
-	NewTopic category(){
-		return new NewTopic("category",1,(short) 1);
+	JsonMessageConverter converter(){
+		return new JsonMessageConverter();
 	}
 }
