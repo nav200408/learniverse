@@ -18,17 +18,17 @@ public class CourseController {
     CourseService courseService;
     @Autowired
     CourseRepository courseRepository;
-    @GetMapping("/showAll")
+    @GetMapping("/show-all")
     public Page<CourseDto> showAllCourse(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
        return courseService.showAllCourseHandler(page,size);
     }
 
-    @GetMapping("/showDetail")
+    @GetMapping("/show-detail")
     public CourseEntity showCourseDetail(@RequestParam int courseId){
         return courseService.showCourseDetailHandler(courseId);
     }
 
-    @PostMapping("/getCourseByIds")
+    @PostMapping("/get-course-by-ids")
     public List<CourseDto> getCourseByIds(@RequestBody List<Integer> courseIds){
         List<CourseEntity> courseEntities = courseRepository.findAllById(courseIds);
         return courseEntities.stream().map(course-> new CourseDto(course.getCourseName(),course.getCourseDetail(),course.getPrice(),course.getCourseImage(),course.getCourseId()))

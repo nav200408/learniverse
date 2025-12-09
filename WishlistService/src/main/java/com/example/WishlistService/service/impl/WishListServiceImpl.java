@@ -22,9 +22,18 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public ResponseEntity addToWishListHandler(int courseId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        WishList wishList = new WishList(username,courseId);
-        wishListRepository.saveAndFlush(wishList);
-        return ResponseEntity.ok("success");
+        if(wishListRepository.findByUsernameAndCourseId(username,courseId).isPresent()) {
+//            WishList wishList = new WishList(username, courseId);
+//            wishListRepository.saveAndFlush(wishList);
+//            return ResponseEntity.ok("success");
+            return ResponseEntity.badRequest().body("fail");
+        }
+        else
+        {
+            WishList wishList = new WishList(username, courseId);
+            wishListRepository.saveAndFlush(wishList);
+            return ResponseEntity.ok("success");
+        }
     }
 
     @Override

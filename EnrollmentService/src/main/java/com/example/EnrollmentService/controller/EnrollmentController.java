@@ -33,6 +33,7 @@ public class EnrollmentController {
     @GetMapping("/is-enrolled")
     public ResponseEntity checkEnrollment(@RequestParam int courseId){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("username"+username);
         Optional<EnrollmentEntity> enrollmentEntity = enrollmentRepository.findByUsernameAndCourseId(username,courseId);
         if(enrollmentEntity.isPresent()){
             return ResponseEntity.ok(true);

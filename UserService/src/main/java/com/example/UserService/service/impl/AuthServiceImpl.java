@@ -2,6 +2,7 @@ package com.example.UserService.service.impl;
 
 import com.example.UserService.dto.request.AuthenticationRequest;
 import com.example.UserService.dto.request.RegisterRequest;
+import com.example.UserService.dto.response.AuthenticationResponse;
 import com.example.UserService.jwt.security.JwtUtils;
 import com.example.UserService.jwt.security.UserDetail;
 import com.example.UserService.model.UserEntity;
@@ -17,16 +18,18 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
     @Autowired
    private UserRepository userRepository;
     @Override
-    public ResponseEntity<String> loginHandler(AuthenticationRequest authenticationRequest){
+    public ResponseEntity loginHandler(AuthenticationRequest authenticationRequest){
         UserEntity userEntity = userRepository.findByUserName(authenticationRequest.getEmail());
 
-        if (userEntity != null && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())) {
+        if (userEntity != null && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())&& userEntity.isAccountNonLock()) {
             UserDetail userDetail = new UserDetail(userEntity);
             String accessToken = JwtUtils.generateAccessToken(userDetail);
             String refreshToken = JwtUtils.generateRefreshToken(userDetail);
 
-            String response = String.format("{\"accessToken\": \"%s\", \"refreshToken\": \"%s\"}", accessToken, refreshToken);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+            authenticationResponse.setAccessToken(accessToken);
+            authenticationResponse.setRefreshToken(refreshToken);
+            return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
         }
 
         return new ResponseEntity<>("Your username or password is incorrect", HttpStatus.BAD_REQUEST);
@@ -45,6 +48,7 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
         userEntity.setFullName(registerRequest.getFullName());
         userEntity.setRole("ROLE_USER");
         userEntity.setEmail(registerRequest.getEmail());
+        userEntity.setAccountNonLock(true);
         userRepository.saveAndFlush(userEntity);
         return new ResponseEntity<>("register success",HttpStatus.OK);
     }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @FeignClient(name = "CourseService", fallback = CourseServiceFallback.class)
 public interface CourseService {
-    @PostMapping("/course/getCourseByIds")
+    @PostMapping("/course/get-course-by-ids")
     public List<CourseDto> getCourseByIds(@RequestBody List<Integer> courseIds,@RequestHeader("Authorization") String authHeader);
 }
 @Component

@@ -20,12 +20,12 @@ public class UserProfileController {
     ProfileService profileService;
     @Autowired
     UserRepository userRepository;
-    @GetMapping("/showProfile")
+    @GetMapping("/show-profile")
     public ResponseEntity<UserProfileResponse> showUserProfile(){
       return profileService.showUserProfileHandler();
     }
 
-    @PostMapping("/editProfile")
+    @PostMapping("/edit-profile")
     public ResponseEntity<UserProfileResponse> editUserProfile(@RequestBody UserProfileRequest userProfileRequest){
         return profileService.editUserProfileHandler(userProfileRequest);
     }

@@ -1,5 +1,6 @@
 package com.example.EnrollmentService.jwt.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 public class JwtUtils {
@@ -21,5 +22,15 @@ public class JwtUtils {
         } catch (Exception e) {
             return false;
         }
+    }
+    public static String getRoleFromToken(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("role", String.class);
+    }
+    private static Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
