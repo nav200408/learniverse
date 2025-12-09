@@ -22,6 +22,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/course/**").permitAll()
                         .anyRequest().hasAuthority("ROLE_USER")
                 )
                 .sessionManagement(session -> session

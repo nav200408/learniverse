@@ -86,7 +86,7 @@ CourseService courseService;
         return courseService.publishHandler(courseId);
     }
 
-    @GetMapping("/showAll")
+    @GetMapping("/show-all")
     public Page<CourseEntity> showAllCourse(@RequestParam("page") int page, @RequestParam("size") int size){
         Pageable pageable = PageRequest.of(page,size, Sort.by("course_id").descending());
         return courseRepository.findAllByIsDeleteFalse(pageable);

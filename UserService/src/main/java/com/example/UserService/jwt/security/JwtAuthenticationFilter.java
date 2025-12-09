@@ -22,10 +22,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && JwtUtils.validateToken(token)) {
             String username = JwtUtils.getUsernameFromToken(token);
-
+            String role = JwtUtils.getRoleFromToken(token);
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(username, null,
-                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                            Collections.singletonList(new SimpleGrantedAuthority(role)));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

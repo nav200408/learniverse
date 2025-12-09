@@ -37,6 +37,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     public ResponseEntity<String> lockUserHandler(String username) {
        UserEntity userEntity = userRepository.findByUserName(username);
        userEntity.setAccountNonLock(false);
+       userRepository.saveAndFlush(userEntity);
         return ResponseEntity.ok().body("account is locked");
     }
 
