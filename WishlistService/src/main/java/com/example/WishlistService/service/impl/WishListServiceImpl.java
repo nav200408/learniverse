@@ -54,12 +54,5 @@ public class WishListServiceImpl implements WishListService {
         return ResponseEntity.ok(courseDtos);
     }
 
-    @KafkaListener(id = "WishlistGroup", topics = "wishlist")
-    public void listen(WishlistDTO wishlistDTO) {
-        WishList wishList = wishListRepository.findByUsernameAndCourseId(wishlistDTO.getUsername(), wishlistDTO.getCourseId()).get();
-        wishListRepository.delete(wishList);
-
-    }
-
 
 }

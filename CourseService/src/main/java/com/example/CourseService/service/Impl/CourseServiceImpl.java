@@ -6,10 +6,7 @@ import com.example.CourseService.model.CourseEntity;
 import com.example.CourseService.model.DocumentEntity;
 import com.example.CourseService.model.UnitEntity;
 import com.example.CourseService.model.VideoEntity;
-import com.example.CourseService.repository.CourseRepository;
-import com.example.CourseService.repository.DocumentRepository;
-import com.example.CourseService.repository.UnitRepository;
-import com.example.CourseService.repository.VideoRepository;
+import com.example.CourseService.repository.*;
 import com.example.CourseService.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +33,8 @@ public class CourseServiceImpl implements CourseService {
     DocumentRepository documentRepository;
     @Autowired
     KafkaTemplate<String,Object> kafkaTemplate;
+    @Autowired
+    CategoryKafkaEvent categoryKafkaEvent;
     @Override
     public Page<CourseDto> showAllCourseHandler(int page, int size) {
         Pageable pageable = PageRequest.of(page,size, Sort.by("courseId").descending());
@@ -63,7 +62,18 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseName(courseName);
         course.setPrice(price);
         course.setCourseImage(courseImage);
-        kafkaTemplate.send("category",new CategoryDto(category,courseId,"create"));
+        CourseEntity course1 = courseRepository.saveAndFlush(course);
+        CategoryDto categoryDto = new CategoryDto(category,course1.getCourseId(),"create");
+        kafkaTemplate.send("category",categoryDto).whenComplete((re,err)->{
+            if(err!=null){
+                System.out.println("Send fail,event id: "+ categoryDto.getId());
+                categoryDto.setStatus(false);
+                categoryKafkaEvent.saveAndFlush(categoryDto);
+            }
+            else{
+                System.out.println("Send successfully");
+            }
+        });
         courseRepository.saveAndFlush(course);
         return ResponseEntity.ok().body(course);
     }
@@ -157,7 +167,17 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseName(courseName);
         course.setCourseDetail(courseDetail);
         course.setPrice(price);
-        kafkaTemplate.send("category",new CategoryDto(category,courseId,"edit"));
+        CategoryDto categoryDto = new CategoryDto(category,courseId,"edit");
+        kafkaTemplate.send("category",categoryDto).whenComplete((re,err)->{
+           if(err!=null){
+               System.out.println("Send fail,event id: "+ categoryDto.getId());
+               categoryDto.setStatus(false);
+               categoryKafkaEvent.saveAndFlush(categoryDto);
+           }
+           else{
+               System.out.println("Send successfully");
+           }
+        });
         courseRepository.saveAndFlush(course);
         return ResponseEntity.ok(course);
     }

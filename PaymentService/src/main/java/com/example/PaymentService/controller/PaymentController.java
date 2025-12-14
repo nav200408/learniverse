@@ -4,6 +4,8 @@ import com.example.PaymentService.client.UserService;
 import com.example.PaymentService.dto.request.PaymentSubmitRequest;
 import com.example.PaymentService.dto.response.*;
 import com.example.PaymentService.model.PaymentEntity;
+import com.example.PaymentService.repository.EnrollmentDtoRepository;
+import com.example.PaymentService.repository.MessageDtoRepository;
 import com.example.PaymentService.repository.PaymentRepository;
 import com.example.PaymentService.service.Impl.VNPayService;
 import com.example.PaymentService.service.PaymentService;
@@ -29,6 +31,10 @@ public class PaymentController {
     @Autowired
     KafkaTemplate<String,Object> kafkaTemplate;
     @Autowired
+    EnrollmentDtoRepository enrollmentDtoRepository;
+    @Autowired
+    MessageDtoRepository messageDtoRepository;
+    @Autowired
     UserService userService;
     @PostMapping("/submitOrder")
     public ResponseEntity<PaymentResponse> submitOrder(@RequestBody PaymentSubmitRequest paymentSubmitRequest, HttpServletRequest request){
@@ -48,11 +54,25 @@ public class PaymentController {
             int courseId =Integer.parseInt(orderInfo.split(":")[1].trim());
             String email = orderInfo.split(":")[2].trim();
             EnrollmentResponse enrollmentResponse = new EnrollmentResponse(paymentEntity.getPaymentId(),username,courseId);
-            kafkaTemplate.send("enrollment",enrollmentResponse);
+            kafkaTemplate.send("enrollment",enrollmentResponse).whenComplete((re,err)->{
+                if(err!=null){
+                    System.out.println("Send enrollment fail,event id: "+ enrollmentResponse.getId());
+                    enrollmentDtoRepository.saveAndFlush(enrollmentResponse);
+                }
+                else{
+                    System.out.println("Send enrollment successfully");
+                }
+            });
             MessageDTO messageDTO = new MessageDTO(email,"mua khoa hoc thanh cong",username+ "ban mua thanh cong khoa hoc voi id: "+courseId+" voi gia la: "+totalPrice);
-            kafkaTemplate.send("notification", messageDTO);
-            WishlistDTO wishlistDTO = new WishlistDTO(username,courseId);
-            kafkaTemplate.send("wishlist",wishlistDTO);
+            kafkaTemplate.send("notification", messageDTO).whenComplete((re,err)->{
+                if(err!=null){
+                    System.out.println("Send notification fail,event id: "+ messageDTO.getId());
+                    messageDtoRepository.saveAndFlush(messageDTO);
+                }
+                else{
+                    System.out.println("Send notification successfully");
+                }
+            });
             URI redirectUri = URI.create("");
             return ResponseEntity.status(HttpStatus.FOUND).body("success");
         }
