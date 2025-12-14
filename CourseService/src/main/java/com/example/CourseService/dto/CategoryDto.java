@@ -1,11 +1,33 @@
 package com.example.CourseService.dto;
 
+import jakarta.persistence.*;
+@Entity
 public class CategoryDto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
     private String category;
     private int courseId;
     private String type;
+    private boolean status;
 
     public CategoryDto() {
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public CategoryDto(String category, int courseId, String type) {

@@ -79,7 +79,7 @@ public class GateWayServiceApplication {
 				HttpHeaders headers = response.getHeaders();
 				headers.add("Access-Control-Allow-Origin", "http://localhost:5173");
 				headers.add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-				headers.add("Access-Control-Max-Age", "3600");
+				headers.add("Access-Control-Max-Age", "10000");
 				headers.add("Access-Control-Allow-Headers", "*");
 				headers.add("Access-Control-Expose-Headers", "Authorization, Content-Type");
 				if (request.getMethod() == HttpMethod.OPTIONS) {

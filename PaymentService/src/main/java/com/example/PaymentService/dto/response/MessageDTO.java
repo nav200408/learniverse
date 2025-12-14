@@ -1,7 +1,15 @@
 package com.example.PaymentService.dto.response;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+@Entity
 public class MessageDTO {
-    private String to;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String toUser;
     private String subject;
     private String body;
 
@@ -9,17 +17,25 @@ public class MessageDTO {
     }
 
     public MessageDTO(String to, String subject, String body) {
-        this.to = to;
+        this.toUser = to;
         this.subject = subject;
         this.body = body;
     }
 
-    public String getTo() {
-        return to;
+    public int getId() {
+        return id;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(String to) {
+        this.toUser = to;
     }
 
     public String getSubject() {
