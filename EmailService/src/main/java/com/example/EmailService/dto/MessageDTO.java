@@ -1,7 +1,7 @@
 package com.example.EmailService.dto;
 
 public class MessageDTO {
-    private String to;
+    private String toUser;
     private String subject;
     private String body;
 
@@ -9,17 +9,17 @@ public class MessageDTO {
     }
 
     public MessageDTO(String to, String subject, String body) {
-        this.to = to;
+        this.toUser = to;
         this.subject = subject;
         this.body = body;
     }
 
-    public String getTo() {
-        return to;
+    public String getToUser() {
+        return toUser;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setToUser(String toUser) {
+        this.toUser = toUser;
     }
 
     public String getSubject() {

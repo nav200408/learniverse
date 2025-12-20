@@ -14,7 +14,7 @@ public class EmailController {
     public String sendEmail(
             @RequestBody MessageDTO messageDTO
             ) {
-        emailService.sendSimpleEmail(messageDTO.getTo(), messageDTO.getSubject(), messageDTO.getBody());
-        return "Email sent successfully to " + messageDTO.getTo();
+        emailService.sendSimpleEmail(messageDTO.getToUser(), messageDTO.getSubject(), messageDTO.getBody());
+        return "Email sent successfully to " + messageDTO.getToUser();
     }
 }

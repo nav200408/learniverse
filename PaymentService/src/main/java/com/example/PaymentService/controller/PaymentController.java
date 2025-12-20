@@ -53,6 +53,7 @@ public class PaymentController {
             String username = orderInfo.split(":")[0].trim();
             int courseId =Integer.parseInt(orderInfo.split(":")[1].trim());
             String email = orderInfo.split(":")[2].trim();
+            System.out.println(email);
             EnrollmentResponse enrollmentResponse = new EnrollmentResponse(paymentEntity.getPaymentId(),username,courseId);
             kafkaTemplate.send("enrollment",enrollmentResponse).whenComplete((re,err)->{
                 if(err!=null){
