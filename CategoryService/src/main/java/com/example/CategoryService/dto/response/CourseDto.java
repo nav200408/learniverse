@@ -1,6 +1,7 @@
 package com.example.CategoryService.dto.response;
 
-public class CourseDto {
+public class
+CourseDto {
     private int courseId;
     private String courseName;
     private String courseDetail;

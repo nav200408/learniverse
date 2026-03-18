@@ -1,20 +1,13 @@
 package com.example.EnrollmentService.service;
 
-import com.example.EnrollmentService.dto.response.EnrollmentResponse;
-import com.example.EnrollmentService.model.EnrollmentEntity;
-import com.example.EnrollmentService.repository.EnrollmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import com.example.EnrollmentService.dto.response.CourseDto;
+import com.example.EnrollmentService.event.EnrollmentEvent;
+import org.springframework.http.ResponseEntity;
 
-@Service
-public class EnrollmentService {
-    @Autowired
-    EnrollmentRepository enrollmentRepository;
+import java.util.List;
 
-    @KafkaListener(id = "EnrollmentGroup", topics = "enrollment")
-    public void listen(EnrollmentResponse enrollmentResponse) {
-        EnrollmentEntity enrollmentEntity = new EnrollmentEntity(enrollmentResponse.getPaymentId(), enrollmentResponse.getUsername(), enrollmentResponse.getCourseId());
-        enrollmentRepository.saveAndFlush(enrollmentEntity);
-    }
+public interface EnrollmentService {
+    void processEnrollment(EnrollmentEvent enrollmentEvent);
+    List<CourseDto> getAllMyCourse();
+    ResponseEntity<?> checkEnrollment(int courseId);
 }
