@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  wishlistservice:
+    build: .
+    container_name: WishlistService
+    ports:
+      - "8093:8093"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

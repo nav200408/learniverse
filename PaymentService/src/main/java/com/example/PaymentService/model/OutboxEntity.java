@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name= "outbox")
+@Table(name= "outbox_payment")
 public class OutboxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

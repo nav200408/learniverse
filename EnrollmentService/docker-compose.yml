@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  enrollmentservice:
+    build: .
+    container_name: EnrollmentService
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

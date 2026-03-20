@@ -6,6 +6,7 @@ import com.example.PaymentService.event.EnrollmentEvent;
 import com.example.PaymentService.exception.PaymentProcessingException;
 import com.example.PaymentService.model.OutboxEntity;
 import com.example.PaymentService.model.PaymentEntity;
+import com.example.PaymentService.repository.OutboxRepository;
 import com.example.PaymentService.service.PaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,9 +19,12 @@ import org.springframework.stereotype.Service;
 public class EnrollmentEventConsumer {
     @Autowired
     PaymentService paymentService;
+    @Autowired
+    OutboxRepository outboxRepository;
 
-    public EnrollmentEventConsumer(PaymentService paymentService) {
+    public EnrollmentEventConsumer(PaymentService paymentService, OutboxRepository outboxRepository) {
         this.paymentService = paymentService;
+        this.outboxRepository = outboxRepository;
     }
 
     public EnrollmentEventConsumer() {
@@ -29,8 +33,10 @@ public class EnrollmentEventConsumer {
     @KafkaListener(topics = PaymentConstants.KAFKA_TOPIC_ENROLLMENT_SUCCESS, groupId = "payment-group")
     @Transactional
     public void enrollSuccess(EnrollmentEvent enrollmentEvent) {
+        System.out.println("hello");
+        System.out.println(enrollmentEvent.getPaymentId());
         ObjectMapper objectMapper = new ObjectMapper();
-        PaymentEntity paymentEntity = paymentService.paymentUpdateHandler(enrollmentEvent.getPaymentId(), "SUCCESS");
+        paymentService.paymentUpdateHandler(enrollmentEvent.getPaymentId(), "SUCCESS");
         OutboxEntity outboxEnroll = new OutboxEntity();
         outboxEnroll.setTopic(PaymentConstants.KAFKA_TOPIC_PAYMENT_PROCESSING_SUCCESS);
         outboxEnroll.setStatus(OutboxStatus.PENDING);
@@ -39,11 +45,14 @@ public class EnrollmentEventConsumer {
         } catch (JsonProcessingException e) {
             throw new PaymentProcessingException("Failed to serialize enrollment event", e);
         }
+        outboxRepository.save(outboxEnroll);
     }
 
     @KafkaListener(topics = PaymentConstants.KAFKA_TOPIC_ENROLLMENT_FAIL, groupId = "payment-group")
+    @Transactional
     public void enrollFail(EnrollmentEvent enrollmentEvent) {
-        PaymentEntity paymentEntity = paymentService.paymentUpdateHandler(enrollmentEvent.getPaymentId(), "FAIL");
+        System.out.println(enrollmentEvent.getPaymentId());
+        paymentService.paymentUpdateHandler(enrollmentEvent.getPaymentId(), "FAIL");
         ObjectMapper objectMapper = new ObjectMapper();
         OutboxEntity outboxEnroll = new OutboxEntity();
         outboxEnroll.setTopic(PaymentConstants.KAFKA_TOPIC_PAYMENT_PROCESSING_FAIL);
@@ -53,5 +62,6 @@ public class EnrollmentEventConsumer {
         } catch (JsonProcessingException e) {
             throw new PaymentProcessingException("Failed to serialize enrollment event", e);
         }
+        outboxRepository.save(outboxEnroll);
     }
 }

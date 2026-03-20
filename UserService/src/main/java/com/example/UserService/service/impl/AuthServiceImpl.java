@@ -19,7 +19,7 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
    private UserRepository userRepository;
     @Override
     public ResponseEntity loginHandler(AuthenticationRequest authenticationRequest){
-        UserEntity userEntity = userRepository.findByUserName(authenticationRequest.getEmail());
+        UserEntity userEntity = userRepository.findByUserName(authenticationRequest.getUsername());
 
         if (userEntity != null && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())&& userEntity.isAccountNonLock()) {
             UserDetail userDetail = new UserDetail(userEntity);

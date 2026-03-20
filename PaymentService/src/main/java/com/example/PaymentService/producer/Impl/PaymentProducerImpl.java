@@ -3,7 +3,9 @@ package com.example.PaymentService.producer.Impl;
 import com.example.PaymentService.producer.PaymentProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PaymentProducerImpl implements PaymentProducer {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;

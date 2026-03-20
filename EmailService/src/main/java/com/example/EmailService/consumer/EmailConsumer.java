@@ -12,13 +12,13 @@ public class EmailConsumer {
     @Autowired
     private EmailServiceImpl emailServiceImpl;
 
-    @KafkaListener(id = "notificationGroup", topics = EmailConstant.KAFKA_TOPIC_PAYMENT_PROCESSING_SUCCESS)
+    @KafkaListener(topics = EmailConstant.KAFKA_TOPIC_PAYMENT_PROCESSING_SUCCESS,groupId = "notification")
     public void listenSuccessEnrollment(EnrollmentEvent enrollmentEvent) {
         emailServiceImpl.sendSimpleEmail(enrollmentEvent.getEmail(), "YOU SUCCESSFULLY PURCHASE A NEW COURSE !!!",
                 "You just enroll in the course " + enrollmentEvent.getCourseId());
     }
 
-    @KafkaListener(id = "notificationGroup", topics = EmailConstant.KAFKA_TOPIC_PAYMENT_PROCESSING_FAIL)
+    @KafkaListener(topics = EmailConstant.KAFKA_TOPIC_PAYMENT_PROCESSING_FAIL, groupId = "notification")
     public void listenFailEnrollment(EnrollmentEvent enrollmentEvent) {
         emailServiceImpl.sendSimpleEmail(enrollmentEvent.getEmail(), "YOU FAILED TO PURCHASE A NEW COURSE !!!",
                 "You just fail to enroll in the course " + enrollmentEvent.getCourseId());

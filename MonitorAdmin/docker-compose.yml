@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  monitoradmin:
+    build: .
+    container_name: MonitorAdmin
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

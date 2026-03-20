@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  courseservice:
+    build: .
+    container_name: CourseService
+    ports:
+      - "8092:8092"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

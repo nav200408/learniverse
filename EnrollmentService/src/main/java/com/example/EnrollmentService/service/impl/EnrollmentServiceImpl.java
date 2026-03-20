@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +53,40 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             return ResponseEntity.ok(true);
         }
         return ResponseEntity.ok(false);
+    }
+
+    @Override
+    @Transactional
+    public void processEnrollment(EnrollmentEvent enrollmentEvent) throws JsonProcessingException {
+        EnrollmentEntity enrollmentEntity = new EnrollmentEntity(
+                enrollmentEvent.getPaymentId(),
+                enrollmentEvent.getUsername(),
+                enrollmentEvent.getCourseId());
+        
+        enrollmentRepository.saveAndFlush(enrollmentEntity);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        OutboxEntity outboxEntity = new OutboxEntity();
+        outboxEntity.setTopic(EnrollmentConstants.KAFKA_TOPIC_ENROLLMENT_SUCCESS);
+        outboxEntity.setStatus(OutboxStatus.PENDING);
+        outboxEntity.setPayload(objectMapper.writeValueAsString(enrollmentEvent));
+
+        outboxRepository.saveAndFlush(outboxEntity);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void processEnrollmentFailure(EnrollmentEvent enrollmentEvent) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            OutboxEntity outboxEntity = new OutboxEntity();
+            outboxEntity.setTopic(EnrollmentConstants.KAFKA_TOPIC_ENROLLMENT_FAIL);
+            outboxEntity.setStatus(OutboxStatus.PENDING);
+            outboxEntity.setPayload(objectMapper.writeValueAsString(enrollmentEvent));
+            
+            outboxRepository.saveAndFlush(outboxEntity);
+        } catch (JsonProcessingException jsonException) {
+            throw new EnrollmentProcessingException("Failed to serialize enrollment event", jsonException);
+        }
     }
 }

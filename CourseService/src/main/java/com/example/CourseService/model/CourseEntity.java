@@ -1,5 +1,6 @@
 package com.example.CourseService.model;
 
+import com.example.CourseService.enums.CourseStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
@@ -22,6 +23,9 @@ public class CourseEntity {
 
     private boolean isDelete = false;
     private boolean isPublish = false;
+
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status;
 
     public CourseEntity() {
     }
@@ -107,5 +111,13 @@ public class CourseEntity {
 
     public void setPublish(boolean publish) {
         isPublish = publish;
+    }
+
+    public CourseStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CourseStatus status) {
+        this.status = status;
     }
 }

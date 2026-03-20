@@ -23,7 +23,7 @@ public class PaymentController {
         this.vnPayService = vnPayService;
     }
 
-    @PostMapping("/submitOrder")
+    @PostMapping("/submit-order")
     public ResponseEntity<PaymentResponse> submitOrder(@RequestBody PaymentSubmitRequest paymentSubmitRequest, HttpServletRequest request){
         return paymentService.paymentHandler(paymentSubmitRequest,request);
     }

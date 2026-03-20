@@ -44,8 +44,8 @@ public class PaymentServiceImpl implements PaymentService {
         return ResponseEntity.ok().body(new PaymentResponse(vnpayUrl));
     }
 
-    public PaymentEntity paymentUpdateHandler(int orderId, String status) {
-        return paymentRepository.updatePaymentStatus(orderId, status);
+    public void paymentUpdateHandler(int paymentId, String status) {
+        paymentRepository.updatePaymentStatus(paymentId, status);
     }
 
     @Transactional
@@ -60,6 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
             int courseId = Integer.parseInt(orderInfo.split(":")[1].trim());
             String email = orderInfo.split(":")[2].trim();
 
+            paymentRepository.saveAndFlush(paymentEntity);
             EnrollmentEvent enrollmentEvent = new EnrollmentEvent(paymentEntity.getPaymentId(), username, courseId,
                     email);
             OutboxEntity outboxEnroll = new OutboxEntity();
@@ -70,7 +71,6 @@ public class PaymentServiceImpl implements PaymentService {
             } catch (JsonProcessingException e) {
                 throw new PaymentProcessingException("Failed to serialize enrollment event", e);
             }
-            paymentRepository.saveAndFlush(paymentEntity);
             outboxRepository.save(outboxEnroll);
             return true;
         }

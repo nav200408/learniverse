@@ -37,9 +37,9 @@ public class OutboxMessageRelayImpl implements OutboxMessageRelay {
         }
     }
 
-    @Scheduled(fixedDelay = 60000)
-    @Transactional
-    public void cleanupProcessedMessages() {
-        outboxRepository.deleteByStatus(OutboxStatus.SENT);
-    }
+//    @Scheduled(fixedDelay = 6000)
+//    @Transactional
+//    public void cleanupProcessedMessages() {
+//        outboxRepository.deleteByStatus(OutboxStatus.SENT);
+//    }
 }

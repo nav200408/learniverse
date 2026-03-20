@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  userservice:
+    build: .
+    container_name: UserService
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

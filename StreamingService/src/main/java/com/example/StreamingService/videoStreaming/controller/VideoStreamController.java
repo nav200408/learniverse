@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +17,16 @@ import java.io.RandomAccessFile;
 @RequestMapping("/video")
 public class VideoStreamController {
 
-    private static final String VIDEO_UPLOAD_DIR="E:/Learniverse/StreamingService/src/main/java/com/example/StreamingService/videoStreaming/uploads/";
+    @Value("${UPLOAD_BASE_DIR:./uploads}")
+    private String baseDir;
+
+    private String getUploadDir() {
+        return new File(baseDir + "/videoStreaming/uploads/").getAbsolutePath() + File.separator;
+    }
 
     @GetMapping("/stream")
     public void streamVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam String filename) throws IOException {
-        File videoFile = new File(VIDEO_UPLOAD_DIR+filename);
+        File videoFile = new File(getUploadDir() + filename);
         long fileLength = videoFile.length();
         String rangeHeader = request.getHeader(HttpHeaders.RANGE);
 
@@ -67,7 +73,7 @@ public class VideoStreamController {
         }
 
         // Ensure the upload directory exists
-        File uploadDir = new File(VIDEO_UPLOAD_DIR);
+        File uploadDir = new File(getUploadDir());
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -83,7 +89,7 @@ public class VideoStreamController {
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String newFilename = originalName + "_" + timestamp + extension;
-        String filePath = VIDEO_UPLOAD_DIR + newFilename;
+        String filePath = getUploadDir() + newFilename;
 
         // Save video file
         file.transferTo(new File(filePath));

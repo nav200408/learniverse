@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  configservice:
+    build: .
+    container_name: ConfigService
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=native,docker
