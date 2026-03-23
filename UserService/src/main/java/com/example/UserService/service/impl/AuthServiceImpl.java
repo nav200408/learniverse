@@ -3,6 +3,7 @@ package com.example.UserService.service.impl;
 import com.example.UserService.dto.request.AuthenticationRequest;
 import com.example.UserService.dto.request.RegisterRequest;
 import com.example.UserService.dto.response.AuthenticationResponse;
+import com.example.UserService.exception.UserProcessingException;
 import com.example.UserService.jwt.security.JwtUtils;
 import com.example.UserService.jwt.security.UserDetail;
 import com.example.UserService.model.UserEntity;
@@ -32,13 +33,13 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
             return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>("Your username or password is incorrect", HttpStatus.BAD_REQUEST);
+        throw new UserProcessingException("Your username or password is incorrect");
     }
     @Override
     public ResponseEntity<String> registerHandler(RegisterRequest registerRequest){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
         if(userRepository.findByUserName(registerRequest.getUsername())!=null){
-            return new ResponseEntity<>("username already exist", HttpStatus.BAD_REQUEST);
+            throw new UserProcessingException("username already exist");
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setUserName(registerRequest.getUsername());
