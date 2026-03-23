@@ -1,7 +1,0 @@
-2026-03-23T14:19:55.907+07:00  WARN 28088 --- [EmailService] [main] .s.s.UserDetailsServiceAutoConfiguration : 
-
-Using generated security password: a3fd685a-30b2-4a84-bfb5-d655efba7547
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-03-23T14:19:56.080+07:00  WARN 28088 --- [EmailService] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
