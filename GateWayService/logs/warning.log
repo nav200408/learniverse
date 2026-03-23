@@ -43,3 +43,22 @@ spring-cloud-starter-gateway is deprecated. It will be removed in the next major
 2026-03-23T13:52:11.010+07:00  WARN 24396 --- [GateWayService] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
 2026-03-23T13:53:48.607+07:00  WARN 24396 --- [GateWayService] [SpringApplicationShutdownHook] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on DELETE request for "http://localhost:8083/eureka/apps/GATEWAYSERVICE/host.docker.internal:GateWayService:8084": Connect to http://localhost:8083 failed: Connection refused: getsockopt
 2026-03-23T13:53:48.612+07:00  WARN 24396 --- [GateWayService] [SpringApplicationShutdownHook] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on DELETE request for "http://localhost:8083/eureka/apps/GATEWAYSERVICE/host.docker.internal:GateWayService:8084": Connect to http://localhost:8083 failed: Connection refused: getsockopt
+2026-03-23T14:20:39.272+07:00  WARN 13496 --- [GateWayService] [main] GatewayClassPathWarningAutoConfiguration : 
+
+**********************************************************
+
+The artifact spring-cloud-gateway-server is deprecated. It will be removed in the next major release. Please add spring-cloud-gateway-server-webflux dependency.
+
+**********************************************************
+
+
+2026-03-23T14:20:39.815+07:00  WARN 13496 --- [GateWayService] [main] s.w.s.StarterDeprecatedAutoConfiguration : 
+
+**********************************************************
+
+spring-cloud-starter-gateway is deprecated. It will be removed in the next major release. Please use spring-cloud-starter-gateway-server-webflux instead.
+
+**********************************************************
+
+
+2026-03-23T14:20:39.819+07:00  WARN 13496 --- [GateWayService] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.

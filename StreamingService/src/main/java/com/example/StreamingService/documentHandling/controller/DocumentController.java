@@ -1,6 +1,5 @@
 package com.example.StreamingService.documentHandling.controller;
 
-
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,15 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 @RestController
 @RequestMapping("/document")
 public class DocumentController {
-    @Value("${UPLOAD_BASE_DIR:./uploads}")
-    private String baseDir;
-
-    private String getUploadDir() {
-        return new File(baseDir + "/documentHandling/uploads/").getAbsolutePath() + File.separator;
-    }
+    private String baseDir= "C:/Users/vuna1/Desktop/learniverse/learniverse/StreamingService/src/main/java/com/example/StreamingService/documentHandling/uploads/";
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadPDF(@RequestParam("file") MultipartFile file) throws IOException {
@@ -34,21 +29,20 @@ public class DocumentController {
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String timestampedFilename = System.currentTimeMillis() + extension;
 
-        File uploadDir = new File(getUploadDir());
+        File uploadDir = new File(baseDir);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
 
-        File dest = new File(getUploadDir() + timestampedFilename);
+        File dest = new File(baseDir + timestampedFilename);
         file.transferTo(dest);
 
         return ResponseEntity.ok(timestampedFilename);
     }
 
-
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> downloadPDF(@PathVariable String filename) throws IOException {
-        File file = new File(getUploadDir() + filename);
+        File file = new File(baseDir + filename);
         if (!file.exists()) {
             return ResponseEntity.notFound().build();
         }

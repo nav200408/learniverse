@@ -7,26 +7,26 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/image")
 public class ImageController {
-    @Value("${UPLOAD_BASE_DIR:./uploads}")
-    private String baseDir;
+    private String baseDir= "C:/Users/vuna1/Desktop/learniverse/learniverse/StreamingService/src/main/java/com/example/StreamingService/ImageStreaming/uploads/";
 
-    private String getUploadDir() {
-        return new File(baseDir + "/ImageStreaming/uploads/").getAbsolutePath() + File.separator;
-    }
+
 
     @GetMapping("/stream")
     public void getImage(HttpServletResponse response, @RequestParam String filename) throws IOException {
-        File imageFile = new File(getUploadDir() + filename);
-
+        File imageFile = new File(baseDir + filename);
+        System.out.println(baseDir);
         // Set content type based on file type
         response.setContentType("image/png"); // or "image/png"
 
         try (InputStream inputStream = new FileInputStream(imageFile);
-             OutputStream outputStream = response.getOutputStream()) {
+                OutputStream outputStream = response.getOutputStream()) {
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -41,8 +41,10 @@ public class ImageController {
             return ResponseEntity.badRequest().body("File is empty");
         }
 
+        System.out.println(baseDir);
+
         // Ensure the upload directory exists
-        File uploadDir = new File(getUploadDir());
+        File uploadDir = new File(baseDir);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -59,7 +61,7 @@ public class ImageController {
         // Add current time millis to avoid collisions
         String timestamp = String.valueOf(System.currentTimeMillis());
         String newFilename = originalName + "_" + timestamp + extension;
-        String filePath = getUploadDir() + newFilename;
+        String filePath = baseDir + newFilename;
 
         // Save the file
         file.transferTo(new File(filePath));

@@ -96,3 +96,13 @@ com.netflix.discovery.shared.transport.TransportException: Cannot execute reques
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 
 2026-03-23T13:53:46.638+07:00  WARN 11920 --- [UserService] [SpringApplicationShutdownHook] c.n.d.s.t.d.RetryableEurekaHttpClient    : Request execution failed with message: I/O error on DELETE request for "http://localhost:8083/eureka/apps/USERSERVICE/host.docker.internal:UserService:8087": Connect to http://localhost:8083 failed: Connection refused: getsockopt
+2026-03-23T14:21:06.105+07:00  WARN 17228 --- [UserService] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-23T14:21:06.106+07:00  WARN 17228 --- [UserService] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-03-23T14:21:06.812+07:00  WARN 17228 --- [UserService] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-23T14:21:07.035+07:00  WARN 17228 --- [UserService] [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f93d31a2-d63b-405b-94b0-e83a35ef5ea1
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-23T14:21:07.274+07:00  WARN 17228 --- [UserService] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.

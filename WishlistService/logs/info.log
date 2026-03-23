@@ -228,3 +228,59 @@ Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http:
 	... 38 more
 
 2026-03-23T13:53:46.647+07:00  INFO 14632 --- [WishlistService] [SpringApplicationShutdownHook] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2026-03-23T14:21:12.188+07:00  INFO 18492 --- [WishlistService] [main] c.e.W.WishlistServiceApplication         : Starting WishlistServiceApplication using Java 25.0.1 with PID 18492 (C:\Users\vuna1\Desktop\learniverse\learniverse\WishlistService\target\classes started by vuna1 in C:\Users\vuna1\Desktop\learniverse\learniverse)
+2026-03-23T14:21:12.191+07:00  INFO 18492 --- [WishlistService] [main] c.e.W.WishlistServiceApplication         : No active profile set, falling back to 1 default profile: "default"
+2026-03-23T14:21:12.221+07:00  INFO 18492 --- [WishlistService] [main] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8082
+2026-03-23T14:21:12.222+07:00  INFO 18492 --- [WishlistService] [main] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=WishlistService, profiles=[default], label=null, version=null, state=null
+2026-03-23T14:21:12.862+07:00  INFO 18492 --- [WishlistService] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-23T14:21:12.945+07:00  INFO 18492 --- [WishlistService] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 1 JPA repository interface.
+2026-03-23T14:21:13.162+07:00  INFO 18492 --- [WishlistService] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5fc30c5d-90fb-38ec-80d5-7b893589f165
+2026-03-23T14:21:13.601+07:00  INFO 18492 --- [WishlistService] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8093 (http)
+2026-03-23T14:21:13.611+07:00  INFO 18492 --- [WishlistService] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-23T14:21:13.612+07:00  INFO 18492 --- [WishlistService] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-03-23T14:21:13.654+07:00  INFO 18492 --- [WishlistService] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-23T14:21:13.655+07:00  INFO 18492 --- [WishlistService] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1433 ms
+2026-03-23T14:21:13.938+07:00  INFO 18492 --- [WishlistService] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-23T14:21:13.966+07:00  INFO 18492 --- [WishlistService] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2026-03-23T14:21:13.984+07:00  INFO 18492 --- [WishlistService] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-23T14:21:14.144+07:00  INFO 18492 --- [WishlistService] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-23T14:21:14.164+07:00  INFO 18492 --- [WishlistService] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-23T14:21:14.374+07:00  INFO 18492 --- [WishlistService] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@79392584
+2026-03-23T14:21:14.375+07:00  INFO 18492 --- [WishlistService] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-23T14:21:14.412+07:00  INFO 18492 --- [WishlistService] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-23T14:21:14.904+07:00  INFO 18492 --- [WishlistService] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-23T14:21:14.937+07:00  INFO 18492 --- [WishlistService] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-23T14:21:15.145+07:00  INFO 18492 --- [WishlistService] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-23T14:21:15.498+07:00  INFO 18492 --- [WishlistService] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'CourseService' URL not provided. Will try picking an instance via load-balancing.
+2026-03-23T14:21:16.131+07:00  INFO 18492 --- [WishlistService] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 26 endpoints beneath base path '/actuator'
+2026-03-23T14:21:16.175+07:00  INFO 18492 --- [WishlistService] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-03-23T14:21:16.804+07:00  INFO 18492 --- [WishlistService] [main] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-03-23T14:21:16.916+07:00  INFO 18492 --- [WishlistService] [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-03-23T14:21:16.933+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-03-23T14:21:16.935+07:00  INFO 18492 --- [WishlistService] [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-23T14:21:16.941+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-03-23T14:21:16.941+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-03-23T14:21:16.942+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-03-23T14:21:16.942+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-03-23T14:21:16.942+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-03-23T14:21:16.943+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-03-23T14:21:16.943+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-03-23T14:21:17.115+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-03-23T14:21:17.116+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-03-23T14:21:17.118+07:00  INFO 18492 --- [WishlistService] [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-03-23T14:21:17.120+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1774250477119 with initial instances count: 6
+2026-03-23T14:21:17.128+07:00  INFO 18492 --- [WishlistService] [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application WISHLISTSERVICE with eureka with status UP
+2026-03-23T14:21:17.128+07:00  INFO 18492 --- [WishlistService] [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1774250477128, current=UP, previous=STARTING]
+2026-03-23T14:21:17.129+07:00  INFO 18492 --- [WishlistService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_WISHLISTSERVICE/host.docker.internal:WishlistService:8093: registering service...
+2026-03-23T14:21:17.139+07:00  INFO 18492 --- [WishlistService] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8093 (http) with context path '/'
+2026-03-23T14:21:17.139+07:00  INFO 18492 --- [WishlistService] [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8093
+2026-03-23T14:21:17.153+07:00  INFO 18492 --- [WishlistService] [DiscoveryClient-InstanceInfoReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_WISHLISTSERVICE/host.docker.internal:WishlistService:8093 - registration status: 204
+2026-03-23T14:21:17.154+07:00  INFO 18492 --- [WishlistService] [main] c.e.W.WishlistServiceApplication         : Started WishlistServiceApplication in 5.697 seconds (process running for 6.127)
+2026-03-23T14:26:16.948+07:00  INFO 18492 --- [WishlistService] [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration

@@ -16,17 +16,11 @@ import java.io.RandomAccessFile;
 @RestController
 @RequestMapping("/video")
 public class VideoStreamController {
-
-    @Value("${UPLOAD_BASE_DIR:./uploads}")
-    private String baseDir;
-
-    private String getUploadDir() {
-        return new File(baseDir + "/videoStreaming/uploads/").getAbsolutePath() + File.separator;
-    }
-
+    private String baseDir= "C:/Users/vuna1/Desktop/learniverse/learniverse/StreamingService/src/main/java/com/example/StreamingService/videoStreaming/uploads/";
     @GetMapping("/stream")
-    public void streamVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam String filename) throws IOException {
-        File videoFile = new File(getUploadDir() + filename);
+    public void streamVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam String filename)
+            throws IOException {
+        File videoFile = new File(baseDir + filename);
         long fileLength = videoFile.length();
         String rangeHeader = request.getHeader(HttpHeaders.RANGE);
 
@@ -52,7 +46,7 @@ public class VideoStreamController {
         response.setHeader(HttpHeaders.CONTENT_RANGE, String.format("bytes %d-%d/%d", start, end, fileLength));
 
         try (RandomAccessFile inputFile = new RandomAccessFile(videoFile, "r");
-             OutputStream outputStream = response.getOutputStream()) {
+                OutputStream outputStream = response.getOutputStream()) {
 
             inputFile.seek(start);
             byte[] buffer = new byte[8192];
@@ -60,12 +54,14 @@ public class VideoStreamController {
 
             while (bytesToRead > 0) {
                 int bytesRead = inputFile.read(buffer, 0, (int) Math.min(buffer.length, bytesToRead));
-                if (bytesRead == -1) break;
+                if (bytesRead == -1)
+                    break;
                 outputStream.write(buffer, 0, bytesRead);
                 bytesToRead -= bytesRead;
             }
         }
     }
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -73,7 +69,7 @@ public class VideoStreamController {
         }
 
         // Ensure the upload directory exists
-        File uploadDir = new File(getUploadDir());
+        File uploadDir = new File(baseDir);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -89,7 +85,7 @@ public class VideoStreamController {
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String newFilename = originalName + "_" + timestamp + extension;
-        String filePath = getUploadDir() + newFilename;
+        String filePath = baseDir + newFilename;
 
         // Save video file
         file.transferTo(new File(filePath));
@@ -97,4 +93,3 @@ public class VideoStreamController {
         return ResponseEntity.ok(newFilename);
     }
 }
-
