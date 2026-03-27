@@ -1,7 +1,12 @@
-# Use OpenJDK 8 Alpine Linux as the base image
-FROM openjdk:8-jdk-alpine
-# Copy the built JAR file from the local target directory into the Docker image
-# Note: The JAR file name should match your actual build output
-COPY target/CategoryService-0.0.1-SNAPSHOT.jar CategoryService-0.0.1-SNAPSHOT.jar
-# Specify the command to run when the container starts
-ENTRYPOINT ["java", "-jar", "/configservice-0.0.1-SNAPSHOT.jar"]
+# 1. Change version from 8 to 17 to match your compiled JAR
+FROM eclipse-temurin:17-jdk-alpine
+
+# 2. Set the working directory
+WORKDIR /app
+
+# 3. Copy the JAR from your target folder
+# Renaming it to 'app.jar' makes the next step easier
+COPY target/CategoryService-0.0.1-SNAPSHOT.jar app.jar
+
+# 4. Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

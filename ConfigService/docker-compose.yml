@@ -2,8 +2,13 @@ version: '3.8'
 services:
   configservice:
     build: .
-    container_name: ConfigService
     ports:
-      - "8082:8082"
-    environment:
-      - SPRING_PROFILES_ACTIVE=native,docker
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/logs
+networks:
+  default:
+    external:
+      name: microservice-net

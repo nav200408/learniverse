@@ -2,8 +2,12 @@ version: '3.8'
 services:
   discoveryservice:
     build: .
-    container_name: DiscoveryService
+    container_name: discoveryservice
     ports:
       - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
+    env_file:
+      - .env
+networks:
+  default:
+    external:
+      name: microservice-net

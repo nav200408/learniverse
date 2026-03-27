@@ -17,12 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements com.example.UserService.service.AuthService {
     @Autowired
-   private UserRepository userRepository;
+    private UserRepository userRepository;
+
+    public AuthServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
-    public ResponseEntity loginHandler(AuthenticationRequest authenticationRequest){
+    public ResponseEntity loginHandler(AuthenticationRequest authenticationRequest) {
         UserEntity userEntity = userRepository.findByUserName(authenticationRequest.getUsername());
 
-        if (userEntity != null && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())&& userEntity.isAccountNonLock()) {
+        if (userEntity != null
+                && new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), userEntity.getPassword())
+                && userEntity.isAccountNonLock()) {
             UserDetail userDetail = new UserDetail(userEntity);
             String accessToken = JwtUtils.generateAccessToken(userDetail);
             String refreshToken = JwtUtils.generateRefreshToken(userDetail);
@@ -35,10 +42,11 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
 
         throw new UserProcessingException("Your username or password is incorrect");
     }
+
     @Override
-    public ResponseEntity<String> registerHandler(RegisterRequest registerRequest){
+    public ResponseEntity<String> registerHandler(RegisterRequest registerRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
-        if(userRepository.findByUserName(registerRequest.getUsername())!=null){
+        if (userRepository.findByUserName(registerRequest.getUsername()) != null) {
             throw new UserProcessingException("username already exist");
         }
         UserEntity userEntity = new UserEntity();
@@ -51,9 +59,7 @@ public class AuthServiceImpl implements com.example.UserService.service.AuthServ
         userEntity.setEmail(registerRequest.getEmail());
         userEntity.setAccountNonLock(true);
         userRepository.saveAndFlush(userEntity);
-        return new ResponseEntity<>("register success",HttpStatus.OK);
+        return new ResponseEntity<>("register success", HttpStatus.OK);
     }
-
-
 
 }

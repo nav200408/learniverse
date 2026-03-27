@@ -18,8 +18,6 @@ services:
       - esdata:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
-    networks:
-      - elk
 
   logstash:
     image: docker.elastic.co/logstash/logstash:8.10.2
@@ -30,8 +28,6 @@ services:
       - "5000:5000/tcp"
     environment:
       - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
-    networks:
-      - elk
     depends_on:
       - elasticsearch
 
@@ -42,8 +38,6 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - "5601:5601"
-    networks:
-      - elk
     depends_on:
       - elasticsearch
 
@@ -52,5 +46,6 @@ volumes:
     driver: local
 
 networks:
-  elk:
-    driver: bridge
+  default:
+    external:
+      name: microservice-net

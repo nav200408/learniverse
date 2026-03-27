@@ -1,9 +1,16 @@
 version: '3.8'
+
 services:
   categoryservice:
     build: .
-    container_name: CategoryService
+    restart: on-failure
     ports:
       - "8094:8094"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
+    env_file:
+      - .env
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    external: true

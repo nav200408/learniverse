@@ -45,8 +45,8 @@ public class GateWayServiceApplication {
 
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
-										   org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter rateLimiter,
-										   org.springframework.cloud.gateway.filter.ratelimit.KeyResolver keyResolver) {
+			org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter rateLimiter,
+			org.springframework.cloud.gateway.filter.ratelimit.KeyResolver keyResolver) {
 
 		return builder.routes()
 
@@ -54,104 +54,80 @@ public class GateWayServiceApplication {
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("UserCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://UserService"))
 
 				.route("course-route", r -> r.path("/course-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("CourseCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://CourseService"))
 
 				.route("email-route", r -> r.path("/email-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("EmailCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://EmailService"))
 
 				.route("enrollment-route", r -> r.path("/enrollment-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("EnrollmentCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://EnrollmentService"))
 
 				.route("payment-route", r -> r.path("/payment-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("PaymentCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://PaymentService"))
 
 				.route("stream-route", r -> r.path("/stream-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("StreamingCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://StreamingService"))
 
 				.route("wishlist-route", r -> r.path("/wishlist-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("WishlistCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://WishlistService"))
 
 				.route("category-route", r -> r.path("/category-route/**")
 						.filters(f -> f.stripPrefix(1)
 								.requestRateLimiter(c -> c
 										.setRateLimiter(rateLimiter)
-										.setKeyResolver(keyResolver)
-								)
+										.setKeyResolver(keyResolver))
 								.circuitBreaker(c -> c
-										.setName("CircuitBreaker")
-										.setFallbackUri("forward:/fallback")
-								)
-						)
+										.setName("CategoryCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://CategoryService"))
 
 				.build();

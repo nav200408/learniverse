@@ -13,24 +13,24 @@ import java.util.Arrays;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex,
+            HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 "Not Found",
                 ex.getMessage() + " Traceback: " + Arrays.toString(ex.getStackTrace()),
-                request.getRequestURI()
-        );
+                request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CourseProcessingException.class)
-    public ResponseEntity<ErrorResponse> handleCourseProcessingException(CourseProcessingException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleCourseProcessingException(CourseProcessingException ex,
+            HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 ex.getMessage() + " Traceback: " + Arrays.toString(ex.getStackTrace()),
-                request.getRequestURI()
-        );
+                request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -40,8 +40,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 "An unexpected error occurred: " + ex.getMessage() + Arrays.toString(ex.getStackTrace()),
-                request.getRequestURI()
-        );
+                request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

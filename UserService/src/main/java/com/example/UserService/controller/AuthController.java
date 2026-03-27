@@ -10,6 +10,7 @@ import com.example.UserService.service.AuthService;
 import com.example.UserService.service.impl.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterRequest registerRequest) {
         logger.info("Register request: {}", registerRequest);
         return authService.registerHandler(registerRequest);
     }

@@ -1,12 +1,19 @@
 version: '3.8'
+
 services:
   streamingservice:
     build: .
-    container_name: StreamingService
+    restart: on-failure
     ports:
-      - "8091:8091"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - UPLOAD_BASE_DIR=/app/uploads
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
     volumes:
-      - ./data:/app/uploads
+      - ./uploads:/uploads
+      - ./logs:/logs
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    external: true

@@ -14,14 +14,24 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/image")
 public class ImageController {
-    private String baseDir= "C:/Users/vuna1/Desktop/learniverse/learniverse/StreamingService/src/main/java/com/example/StreamingService/ImageStreaming/uploads/";
+    @Value("${UPLOAD_BASE_DIR}")
+    private String uploadBaseDir;
+
+    private String getBaseDir() {
+        String path = uploadBaseDir;
+        if (!path.endsWith("/") && !path.endsWith("\\")) {
+            path += File.separator;
+        }
+        String fullPath = path + "ImageStreaming" + File.separator + "uploads" + File.separator;
+        return new File(fullPath).getAbsolutePath() + File.separator;
+    }
 
 
 
     @GetMapping("/stream")
     public void getImage(HttpServletResponse response, @RequestParam String filename) throws IOException {
-        File imageFile = new File(baseDir + filename);
-        System.out.println(baseDir);
+        File imageFile = new File(getBaseDir() + filename);
+        System.out.println(getBaseDir());
         // Set content type based on file type
         response.setContentType("image/png"); // or "image/png"
 
@@ -41,10 +51,10 @@ public class ImageController {
             return ResponseEntity.badRequest().body("File is empty");
         }
 
-        System.out.println(baseDir);
+        System.out.println(getBaseDir());
 
         // Ensure the upload directory exists
-        File uploadDir = new File(baseDir);
+        File uploadDir = new File(getBaseDir());
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -61,7 +71,7 @@ public class ImageController {
         // Add current time millis to avoid collisions
         String timestamp = String.valueOf(System.currentTimeMillis());
         String newFilename = originalName + "_" + timestamp + extension;
-        String filePath = baseDir + newFilename;
+        String filePath = getBaseDir() + newFilename;
 
         // Save the file
         file.transferTo(new File(filePath));

@@ -16,11 +16,22 @@ import java.io.RandomAccessFile;
 @RestController
 @RequestMapping("/video")
 public class VideoStreamController {
-    private String baseDir= "C:/Users/vuna1/Desktop/learniverse/learniverse/StreamingService/src/main/java/com/example/StreamingService/videoStreaming/uploads/";
+    @Value("${UPLOAD_BASE_DIR}")
+    private String uploadBaseDir;
+
+    private String getBaseDir() {
+        String path = uploadBaseDir;
+        if (!path.endsWith("/") && !path.endsWith("\\")) {
+            path += File.separator;
+        }
+        String fullPath = path + "videoStreaming" + File.separator + "uploads" + File.separator;
+        return new File(fullPath).getAbsolutePath() + File.separator;
+    }
+
     @GetMapping("/stream")
     public void streamVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam String filename)
             throws IOException {
-        File videoFile = new File(baseDir + filename);
+        File videoFile = new File(getBaseDir() + filename);
         long fileLength = videoFile.length();
         String rangeHeader = request.getHeader(HttpHeaders.RANGE);
 
@@ -69,7 +80,7 @@ public class VideoStreamController {
         }
 
         // Ensure the upload directory exists
-        File uploadDir = new File(baseDir);
+        File uploadDir = new File(getBaseDir());
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -85,7 +96,7 @@ public class VideoStreamController {
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String newFilename = originalName + "_" + timestamp + extension;
-        String filePath = baseDir + newFilename;
+        String filePath = getBaseDir() + newFilename;
 
         // Save video file
         file.transferTo(new File(filePath));
