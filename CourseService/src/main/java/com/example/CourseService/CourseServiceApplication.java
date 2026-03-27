@@ -15,8 +15,5 @@ public class CourseServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CourseServiceApplication.class, args);
 	}
-	@Bean
-	NewTopic category(){
-		return new NewTopic("category",1,(short) 1);
-	}
+
 }

@@ -24,49 +24,112 @@ public class GateWayServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GateWayServiceApplication.class, args);
 	}
+
 	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,SomeFilter someFilter,OtherFilter otherFilter) {
+	public org.springframework.cloud.gateway.filter.ratelimit.KeyResolver userKeyResolver() {
+		return exchange -> {
+			if (exchange.getRequest().getRemoteAddress() != null) {
+				return Mono.just(exchange.getRequest()
+						.getRemoteAddress()
+						.getAddress()
+						.getHostAddress());
+			}
+			return Mono.just("anonymous");
+		};
+	}
+
+	@Bean
+	public org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter redisRateLimiter() {
+		return new org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter(10, 20, 1);
+	}
+
+	@Bean
+	public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
+			org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter rateLimiter,
+			org.springframework.cloud.gateway.filter.ratelimit.KeyResolver keyResolver) {
+
 		return builder.routes()
+
 				.route("user-route", r -> r.path("/user-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("UserCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://UserService"))
-				.route("course-route", r->r.path("/course-route/**")
-				.filters(f -> f.stripPrefix(1)
-						.circuitBreaker(c -> c.setName("CircuitBreaker")
-								.getFallbackUri()))
-				.uri("lb://CourseService"))
-				.route("email-route", r->r.path("/email-route/**")
+
+				.route("course-route", r -> r.path("/course-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("CourseCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
+						.uri("lb://CourseService"))
+
+				.route("email-route", r -> r.path("/email-route/**")
+						.filters(f -> f.stripPrefix(1)
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("EmailCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://EmailService"))
-				.route("enrollment-route", r->r.path("/enrollment-route/**")
+
+				.route("enrollment-route", r -> r.path("/enrollment-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("EnrollmentCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://EnrollmentService"))
-				.route("payment-route", r->r.path("/payment-route/**")
+
+				.route("payment-route", r -> r.path("/payment-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("PaymentCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://PaymentService"))
-				.route("stream-route", r->r.path("/stream-route/**")
+
+				.route("stream-route", r -> r.path("/stream-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("StreamingCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://StreamingService"))
-				.route("wishlist-route", r->r.path("/wishlist-route/**")
+
+				.route("wishlist-route", r -> r.path("/wishlist-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("WishlistCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://WishlistService"))
-				.route("category-route", r->r.path("/category-route/**")
+
+				.route("category-route", r -> r.path("/category-route/**")
 						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
+								.requestRateLimiter(c -> c
+										.setRateLimiter(rateLimiter)
+										.setKeyResolver(keyResolver))
+								.circuitBreaker(c -> c
+										.setName("CategoryCircuitBreaker")
+										.setFallbackUri("forward:/fallback")))
 						.uri("lb://CategoryService"))
+
 				.build();
 	}
 
@@ -82,6 +145,7 @@ public class GateWayServiceApplication {
 				headers.add("Access-Control-Max-Age", "10000");
 				headers.add("Access-Control-Allow-Headers", "*");
 				headers.add("Access-Control-Expose-Headers", "Authorization, Content-Type");
+
 				if (request.getMethod() == HttpMethod.OPTIONS) {
 					response.setStatusCode(HttpStatus.OK);
 					return Mono.empty();
@@ -89,5 +153,5 @@ public class GateWayServiceApplication {
 			}
 			return chain.filter(ctx);
 		};
-}}
-
+	}
+}

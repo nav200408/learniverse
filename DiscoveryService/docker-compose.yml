@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  discoveryservice:
+    build: .
+    container_name: discoveryservice
+    ports:
+      - "8083:8083"
+    env_file:
+      - .env
+networks:
+  default:
+    external:
+      name: microservice-net

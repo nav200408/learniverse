@@ -12,14 +12,24 @@ public class PaymentEntity {
     private int paymentAmount;
     private String orderInfo;
     private String payDate;
+    private String status;
 
     public PaymentEntity() {
     }
 
-    public PaymentEntity(int paymentAmount, String orderInfo, String payDate) {
+    public PaymentEntity(int paymentAmount, String orderInfo, String payDate, String status) {
         this.paymentAmount = paymentAmount;
         this.orderInfo = orderInfo;
         this.payDate = payDate;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getPaymentId() {

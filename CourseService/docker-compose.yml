@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  courseservice:
+    build: .
+    restart: on-failure
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/logs
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    external: true

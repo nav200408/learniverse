@@ -6,5 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface PaymentService {
-    ResponseEntity<PaymentResponse> paymentHandler(PaymentSubmitRequest paymentSubmitRequest, HttpServletRequest request);
+    ResponseEntity<PaymentResponse> paymentHandler(PaymentSubmitRequest paymentSubmitRequest,
+            HttpServletRequest request);
+
+    public void paymentUpdateHandler(int orderId, String status);
+
+    public boolean paymentCompleteHanler(int paymentStatus, String orderInfo, String paymentTime, String transactionId,
+            String totalPrice);
+
 }

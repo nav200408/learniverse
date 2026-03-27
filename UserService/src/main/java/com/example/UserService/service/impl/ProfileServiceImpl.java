@@ -2,6 +2,7 @@ package com.example.UserService.service.impl;
 
 import com.example.UserService.dto.request.UserProfileRequest;
 import com.example.UserService.dto.response.UserProfileResponse;
+import com.example.UserService.exception.ResourceNotFoundException;
 import com.example.UserService.model.UserEntity;
 import com.example.UserService.repository.UserRepository;
 import com.example.UserService.service.ProfileService;
@@ -20,6 +21,9 @@ public class ProfileServiceImpl implements ProfileService {
         System.out.println("hello");
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
        UserEntity userEntity = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+       if (userEntity == null) {
+           throw new ResourceNotFoundException("User profile not found");
+       }
        UserProfileResponse userProfileResponse = new UserProfileResponse(userEntity.getUserName(),userEntity.getAge(),userEntity.getFullName(),userEntity.getAddress(), userEntity.getEmail());
        return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
     }
@@ -27,6 +31,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ResponseEntity<UserProfileResponse> editUserProfileHandler(UserProfileRequest userProfileRequest) {
        UserEntity userEntity = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+       if (userEntity == null) {
+           throw new ResourceNotFoundException("User profile not found");
+       }
        userEntity.setFullName(userProfileRequest.getFullName());
        userEntity.setAge(userProfileRequest.getAge());
        userEntity.setAddress(userProfileRequest.getAddress());

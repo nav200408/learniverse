@@ -7,6 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.example.PaymentService.constants.PaymentConstants;
+
 @SpringBootApplication
 @EnableFeignClients
 @EnableScheduling
@@ -15,14 +17,6 @@ public class PaymentServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PaymentServiceApplication.class, args);
 	}
-@Bean
-	NewTopic notification(){
-		return new NewTopic("notification",1,(short) 1);
-	}
-@Bean
-	NewTopic enrollment(){
-		return new NewTopic("enrollment",1,(short) 1);
-	}
-
 
 }
+

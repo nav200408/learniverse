@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  streamingservice:
+    build: .
+    restart: on-failure
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/uploads
+      - ./logs:/logs
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    external: true

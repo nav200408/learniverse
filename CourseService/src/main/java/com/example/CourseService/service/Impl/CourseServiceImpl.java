@@ -1,13 +1,20 @@
 package com.example.CourseService.service.Impl;
 
 import com.example.CourseService.client.StreamingService;
+import com.example.CourseService.enums.CourseStatus;
 import com.example.CourseService.dto.*;
+import com.example.CourseService.event.CategoryEvent;
 import com.example.CourseService.model.CourseEntity;
 import com.example.CourseService.model.DocumentEntity;
 import com.example.CourseService.model.UnitEntity;
 import com.example.CourseService.model.VideoEntity;
+import com.example.CourseService.enums.OutboxStatus;
+import com.example.CourseService.model.OutboxEntity;
 import com.example.CourseService.repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.CourseService.service.CourseService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +41,8 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     KafkaTemplate<String,Object> kafkaTemplate;
     @Autowired
-    CategoryKafkaEvent categoryKafkaEvent;
+    private OutboxRepository outboxRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public Page<CourseDto> showAllCourseHandler(int page, int size) {
         Pageable pageable = PageRequest.of(page,size, Sort.by("courseId").descending());
@@ -51,6 +59,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<CourseEntity> createCourse(int courseId,
                                                     String courseName,
                                                      String courseDetail,
@@ -62,18 +71,17 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseName(courseName);
         course.setPrice(price);
         course.setCourseImage(courseImage);
+        course.setStatus(CourseStatus.PENDING);
         CourseEntity course1 = courseRepository.saveAndFlush(course);
-        CategoryDto categoryDto = new CategoryDto(category,course1.getCourseId(),"create");
-        kafkaTemplate.send("category",categoryDto).whenComplete((re,err)->{
-            if(err!=null){
-                System.out.println("Send fail,event id: "+ categoryDto.getId());
-                categoryDto.setStatus(false);
-                categoryKafkaEvent.saveAndFlush(categoryDto);
-            }
-            else{
-                System.out.println("Send successfully");
-            }
-        });
+        CategoryEvent categoryEvent = new CategoryEvent(category,course1.getCourseId(),"create");
+        
+        try {
+            String payload = objectMapper.writeValueAsString(categoryEvent);
+            OutboxEntity outbox = new OutboxEntity("category", payload, OutboxStatus.PENDING);
+            outboxRepository.save(outbox);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize category event", e);
+        }
         courseRepository.saveAndFlush(course);
         return ResponseEntity.ok().body(course);
     }
@@ -167,17 +175,16 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseName(courseName);
         course.setCourseDetail(courseDetail);
         course.setPrice(price);
-        CategoryDto categoryDto = new CategoryDto(category,courseId,"edit");
-        kafkaTemplate.send("category",categoryDto).whenComplete((re,err)->{
-           if(err!=null){
-               System.out.println("Send fail,event id: "+ categoryDto.getId());
-               categoryDto.setStatus(false);
-               categoryKafkaEvent.saveAndFlush(categoryDto);
-           }
-           else{
-               System.out.println("Send successfully");
-           }
-        });
+        course.setStatus(CourseStatus.PENDING);
+        CategoryEvent categoryEvent = new CategoryEvent(category,courseId,"edit");
+        
+        try {
+            String payload = objectMapper.writeValueAsString(categoryEvent);
+            OutboxEntity outbox = new OutboxEntity("category", payload, OutboxStatus.PENDING);
+            outboxRepository.save(outbox);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize category event", e);
+        }
         courseRepository.saveAndFlush(course);
         return ResponseEntity.ok(course);
     }

@@ -1,6 +1,7 @@
 package com.example.UserService.service.impl;
 
 import com.example.UserService.dto.response.UserDTOResponse;
+import com.example.UserService.exception.ResourceNotFoundException;
 import com.example.UserService.model.UserEntity;
 import com.example.UserService.repository.UserRepository;
 import com.example.UserService.service.UserManagementService;
@@ -36,6 +37,9 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public ResponseEntity<String> lockUserHandler(String username) {
        UserEntity userEntity = userRepository.findByUserName(username);
+       if (userEntity == null) {
+           throw new ResourceNotFoundException("User profile not found: " + username);
+       }
        userEntity.setAccountNonLock(false);
        userRepository.saveAndFlush(userEntity);
         return ResponseEntity.ok().body("account is locked");

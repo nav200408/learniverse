@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  configservice:
+    build: .
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/logs
+networks:
+  default:
+    external:
+      name: microservice-net

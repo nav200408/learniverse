@@ -26,16 +26,16 @@ public interface StreamingService {
 class StreamingServiceFallBack implements StreamingService{
     @Override
     public ResponseEntity<String> uploadImage(MultipartFile file) throws IOException {
-        return null;
+        throw new IOException();
     }
 
     @Override
     public ResponseEntity<String> uploadVideo(MultipartFile file) throws IOException {
-        return null;
+        throw new IOException();
     }
 
     @Override
     public ResponseEntity<String> uploadPDF(MultipartFile file) throws IOException {
-        return null;
+        throw new IOException();
     }
 }
